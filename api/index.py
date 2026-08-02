@@ -1,24 +1,14 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 import xml.etree.ElementTree as ET
-import os
 
 app = Flask(__name__)
 CORS(app)
 
-# 🚀 ДОБАВЛЯЕМ РОУТ ДЛЯ ГЛАВНОЙ СТРАНИЦЫ
-@app.route('/')
-def home():
-    # Отдаем index.html из корня проекта
-    return send_from_directory(os.path.join(app.root_path, '..'), 'index.html')
-
-# 🚀 ДОБАВЛЯЕМ РОУТ ДЛЯ СТАРИКИ (script.js, style.css, manifest.json и т.д.)
-@app.route('/<path:filename>')
-def serve_static(filename):
-    return send_from_directory(os.path.join(app.root_path, '..'), filename)
-
 def parse_element(element):
+    # Убираем namespaces из тегов (например, android:LinearLayout -> LinearLayout)
     tag = element.tag.split('}')[-1] if '}' in element.tag else element.tag
+    
     attributes = {}
     for key, val in element.attrib.items():
         clean_key = key.split('}')[-1] if '}' in key else key
@@ -38,8 +28,9 @@ def parse_xml():
         xml_content = data.get('xml', '')
         
         if not xml_content.strip():
-            return jsonify({"error": "Empty XML"}), 400
+            return jsonify({"success": False, "error": "Empty XML"}), 400
 
+        # Автоматически подставляем namespace android, если его забыли
         if 'xmlns:android' not in xml_content and '<' in xml_content:
             first_tag_end = xml_content.find('>')
             if first_tag_end != -1:
