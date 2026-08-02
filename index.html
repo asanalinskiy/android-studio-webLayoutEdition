@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Android Studio - Web Layout Editor</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Иконки FontAwesome для стиля IDE -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Верхняя панель (Header / Toolbar Studio) -->
+    <header class="studio-header">
+        <div class="logo">
+            <i class="fa-brands fa-android brand-icon"></i>
+            <span>Android Studio Layout Editor</span>
+        </div>
+        <div class="toolbar-actions">
+            <button class="btn-tool" id="btnFormat" title="Форматировать XML"><i class="fa-solid fa-code"></i> Format</button>
+            <button class="btn-tool run" id="btnRun" title="Обновить Превью"><i class="fa-solid fa-play"></i> Render</button>
+        </div>
+    </header>
+
+    <!-- Главная рабочая область -->
+    <main class="studio-workspace">
+        
+        <!-- Панель Редактора XML -->
+        <section class="pane editor-pane">
+            <div class="pane-header">
+                <div class="tab active">
+                    <i class="fa-solid fa-file-code"></i> activity_main.xml
+                </div>
+            </div>
+            <div class="editor-body">
+                <textarea id="xmlInput" spellcheck="false" placeholder="<!-- Вставьте ваш Android Layout XML -->"></textarea>
+            </div>
+            <div id="errorMessage" class="error-log"></div>
+        </section>
+
+        <!-- Разделитель панелей -->
+        <div class="resizer"></div>
+
+        <!-- Панель Превью (Device Frame) -->
+        <section class="pane preview-pane">
+            <div class="pane-header">
+                <span><i class="fa-solid fa-mobile-screen-button"></i> Device Preview</span>
+                <span class="device-spec">Pixel 6 — 393 x 851 dp (420dpi)</span>
+            </div>
+            
+            <div class="viewport">
+                <!-- Оболочка Смартфона -->
+                <div class="phone-frame">
+                    <div class="status-bar">
+                        <span>12:00</span>
+                        <div class="status-icons">
+                            <i class="fa-solid fa-wifi"></i>
+                            <i class="fa-solid fa-battery-full"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Экран, куда рендерится layout -->
+                    <div id="preview" class="android-screen"></div>
+
+                    <div class="navigation-bar">
+                        <div class="nav-btn"></div>
+                        <div class="nav-btn circle"></div>
+                        <div class="nav-btn square"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Нижний статус-бар Studio -->
+    <footer class="studio-footer">
+        <span id="statusText"><i class="fa-solid fa-check-double"></i> Gradle build finished successfully</span>
+        <span>UTF-8 &nbsp;&nbsp; XML</span>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
