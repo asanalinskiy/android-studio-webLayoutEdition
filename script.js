@@ -188,7 +188,7 @@ async function renderXml() {
     try {
         statusText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Parsing...`;
 
-        const response = await fetch('http://localhost:5000/parse-xml', {
+        const response = await fetch('/api/parse-xml', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ xml: rawXml })
