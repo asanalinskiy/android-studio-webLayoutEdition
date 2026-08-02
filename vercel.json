@@ -1,12 +1,9 @@
 {
+  "version": 2,
   "rewrites": [
     {
-      "source": "/api/(.*)",
+      "source": "/api/parse-xml",
       "destination": "/api/index.py"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
     }
   ]
 }
