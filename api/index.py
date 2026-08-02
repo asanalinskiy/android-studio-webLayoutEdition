@@ -1,14 +1,27 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import xml.etree.ElementTree as ET
+import os
 
-app = Flask(__name__)
+# Указываем root_path на папку выше, чтобы видеть index.html, script.js и style.css
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+app = Flask(__name__, static_folder=base_dir, static_url_path='')
 CORS(app)
 
+# 1. Отдаем главную страницу
+@app.route('/')
+def index():
+    return send_from_directory(base_dir, 'index.html')
+
+# 2. Отдаем стили, скрипты и всё остальное
+@app.route('/<path:path>')
+def serve_static_files(path):
+    if os.path.exists(os.path.join(base_dir, path)):
+        return send_from_directory(base_dir, path)
+    return send_from_directory(base_dir, 'index.html')
+
 def parse_element(element):
-    # Убираем namespaces из тегов (например, android:LinearLayout -> LinearLayout)
     tag = element.tag.split('}')[-1] if '}' in element.tag else element.tag
-    
     attributes = {}
     for key, val in element.attrib.items():
         clean_key = key.split('}')[-1] if '}' in key else key
@@ -21,6 +34,7 @@ def parse_element(element):
         "children": children
     }
 
+# 3. Сам парсер
 @app.route('/api/parse-xml', methods=['POST'])
 def parse_xml():
     try:
@@ -30,7 +44,6 @@ def parse_xml():
         if not xml_content.strip():
             return jsonify({"success": False, "error": "Empty XML"}), 400
 
-        # Автоматически подставляем namespace android, если его забыли
         if 'xmlns:android' not in xml_content and '<' in xml_content:
             first_tag_end = xml_content.find('>')
             if first_tag_end != -1:
