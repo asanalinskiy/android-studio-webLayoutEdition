@@ -188,7 +188,7 @@ async function renderXml() {
     try {
         statusText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Parsing...`;
 
-        const response = await fetch('/api/parse-xml', {
+        const response = await fetch('https://xml-parser.asanali.workers.dev/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ xml: rawXml })
