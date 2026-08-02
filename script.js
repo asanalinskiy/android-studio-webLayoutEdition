@@ -9,7 +9,7 @@ const statusText = document.getElementById('statusText');
 // 🎮 ГЛОБАЛЬНЫЕ ФУНКЦИИ И СОСТОЯНИЯ ДЛЯ РАЗНЫХ XML
 // -------------------------------------------------------------
 // Переменные для XML Кликера:
-window.crystals = 12450;
+window.crystals = 0;
 window.clickPower = 1;
 
 // Эта функция автоматически вызовется, если в XML написано: android:onClick="onMineClick"
@@ -76,7 +76,7 @@ const defaultXml = `<LinearLayout
             android:id="@+id/txtScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="💎 12,450"
+            android:text="💎 0"
             android:textColor="#38BDF8"
             android:textSize="36sp"
             android:textStyle="bold"
