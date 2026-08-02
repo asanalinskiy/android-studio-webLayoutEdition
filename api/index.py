@@ -1,9 +1,21 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import xml.etree.ElementTree as ET
+import os
 
 app = Flask(__name__)
 CORS(app)
+
+# 🚀 ДОБАВЛЯЕМ РОУТ ДЛЯ ГЛАВНОЙ СТРАНИЦЫ
+@app.route('/')
+def home():
+    # Отдаем index.html из корня проекта
+    return send_from_directory(os.path.join(app.root_path, '..'), 'index.html')
+
+# 🚀 ДОБАВЛЯЕМ РОУТ ДЛЯ СТАРИКИ (script.js, style.css, manifest.json и т.д.)
+@app.route('/<path:filename>')
+def serve_static(filename):
+    return send_from_directory(os.path.join(app.root_path, '..'), filename)
 
 def parse_element(element):
     tag = element.tag.split('}')[-1] if '}' in element.tag else element.tag
@@ -19,7 +31,7 @@ def parse_element(element):
         "children": children
     }
 
-@app.route('/api/parse-xml', methods=['POST'])  # <-- Обрати внимание на /api/ в пути!
+@app.route('/api/parse-xml', methods=['POST'])
 def parse_xml():
     try:
         data = request.get_json() or {}
@@ -45,5 +57,3 @@ def parse_xml():
         return jsonify({"success": False, "error": f"XML Syntax Error: {str(e)}"}), 400
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
-
-# app.run() НЕ НУЖЕН, Vercel сам заберет объект app
