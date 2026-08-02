@@ -211,7 +211,7 @@ async function renderXml() {
         statusText.innerHTML = `<i class="fa-solid fa-check-double" style="color:#3DDC84"></i> Rendered successfully`;
 
     } catch (err) {
-        errorMessage.textContent = "Ошибка соединения с Python-сервером (http://localhost:5000). Запущен ли server.py?";
+        errorMessage.textContent = "Простите, упали сервера или Python решил прикольнутся над вами..";
         errorMessage.style.display = 'block';
         statusText.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="color:#eab308"></i> Server Offline`;
     }
